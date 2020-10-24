@@ -1,14 +1,14 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import * as Product from './Product'
+import ShoppingAdmin from './components/ShoppingAdmin';
 
 function App() {
   return (
     <div>
-      <Product.AnotherPerson/>
+      <ShoppingAdmin/>
     </div>
   );
 }
-
+// npm i node-sass
 export default App;
