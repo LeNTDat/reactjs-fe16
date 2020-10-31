@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ProductRow(props){
     console.log("COMPONENT PROPS:",props)
-    const {id,name,price,img} = props
+    const {id,name,price,image} = props.product
     return  <div className="table-rows">
     <div className="table-cell">
         {id}
@@ -14,7 +14,7 @@ export default function ProductRow(props){
         {price}$
     </div>
     <div className="table-cell">
-        <img src={img} />
+        <img src={image} />
     </div>
     <div className="table-cell">
         <button className="btn">

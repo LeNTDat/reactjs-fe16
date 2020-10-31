@@ -1,5 +1,5 @@
 import React from 'react';
-import '../admin.scss'
+import '../assets/style/admin.scss'
 import MainContent from './MainContent';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
@@ -19,9 +19,10 @@ export default class ShoppingAdmin extends React.Component {
         })
     }
     render(){
-        return <div className="row">
+        return <div className="container-fluid">
+            <div className="row">
             {/* sidebar dong' => display:none */}
-                <div className="col-md-3" style={{'display':this.state.sidebar_open?'block':'none'}}>
+                <div className="col-md-3 bg" style={{'display':this.state.sidebar_open?'block':'none'}}>
                     <Sidebar/>
                 </div>
                 {/* side bar dong => col-md-12 */}
@@ -30,8 +31,9 @@ export default class ShoppingAdmin extends React.Component {
                    
                     <Navbar toggleSidebar={this.toggleSidebar}/>
                     <MainContent></MainContent>
-                       </div>
+                </div>
             </div>
+        </div>
     }
 }
 
