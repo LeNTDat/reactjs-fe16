@@ -24,7 +24,7 @@
   .content {
     position: relative;
     width: 50%;
-    height: 50%;
+    height: 60%;
     background: white;
   }
 }
@@ -51,6 +51,7 @@
 .navbar {
   margin: 0 -15px;
   box-shadow: $shadow_1;
+  padding: 16px;
   button {
     background: none;
     border: none;
@@ -74,4 +75,18 @@
 .table-rows {
   border-bottom: 1px solid #d2d2d2;
   padding: 20px 0;
+  .table-cell {
+    display: flex;
+    align-items: center;
+    img {
+      max-width: 50px;
+    }
+  }
+}
+
+.empty {
+  min-height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

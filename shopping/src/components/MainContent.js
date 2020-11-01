@@ -1,5 +1,6 @@
 import React from 'react'
 import ContentHeader from './ContentHeader'
+import { Empty } from './Empty'
 import Modal from './Modal'
 import ProductRow from './ProductRow'
 
@@ -7,7 +8,25 @@ export default class MainContent extends React.Component{
     state={
         open:false,
         products : [
-        ]
+            {
+                id:'bcsd2j',
+                name:"ABC 1",
+                price:20,
+                img:""
+            },
+            {
+                id:'8sdsb2',
+                name:"ABC 2",
+                price:20,
+                img:""
+            },  {
+                id:'sdhsod',
+                name:"ABC 3",
+                price:20,
+                img:""
+            },
+        ],
+        isEditting:undefined //index
     }
 
     addProduct=(name,image,price)=>{
@@ -22,11 +41,51 @@ export default class MainContent extends React.Component{
         })
 
     }
+
+    updateProduct = (name,image,price) => {
+        const new_products = [...this.state.products];
+        new_products[this.state.isEditting]={
+            ...new_products[this.state.isEditting],
+            name,
+            image,
+            price
+        }
+        this.setState({
+            products:new_products
+        })
+    }
+
+    deleteProduct = (id) => {
+        const updated_product = [...this.state.products].filter((product)=>{
+            return product.id !== id
+        });
+        this.setState({
+            products:updated_product
+        })
+    }
+
+    updateIsEditting = (id) => {
+        const product_index = this.state.products.findIndex((product)=>{
+            return product.id === id
+        })
+        this.setState({
+            isEditting:product_index
+        })
+        this.toggleModal();
+    }
+
     toggleModal=()=>{
         this.setState({
             open:!this.state.open
         })
     }
+
+    clearIsEditing = () => {
+        this.setState({
+            isEditting:undefined
+        })
+    }
+
     render(){
         return  <>
         <main>
@@ -52,14 +111,14 @@ export default class MainContent extends React.Component{
                     {
                         this.state.products.length>0?
                         this.state.products.map((product)=>{
-                            return <ProductRow  key={`product_id_${product.id}`} product={product}/>
+                            return <ProductRow updateIsEditting={this.updateIsEditting}  deleteProduct={this.deleteProduct} key={`product_id_${product.id}`} product={product}/>
                         })
-                        :<h3>EMPTY</h3>
+                        :<Empty/>
                     }
                 </div>
             </main>
             {
-                this.state.open?<Modal addProduct={this.addProduct} toggleModal={this.toggleModal}/>:''
+                this.state.open?<Modal updateProduct={this.updateProduct} clearIsEditing={this.clearIsEditing} editingProduct={this.state.products[this.state.isEditting]} addProduct={this.addProduct} toggleModal={this.toggleModal}/>:''
             }
         </>
     }

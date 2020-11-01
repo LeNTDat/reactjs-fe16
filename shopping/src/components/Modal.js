@@ -3,11 +3,36 @@ import React, { Component } from 'react'
 export default class Modal extends Component {
     state={
         name:"PRODUCT NEW",
-        price:"",
-        image:""
+        price:20,
+        image:"//bizweb.dktcdn.net/thumb/large/100/331/067/products/115844444-311743083208439-6108934669943805257-n.jpg?v=1595330674000"
     }
     handleClose=()=>{
         this.props.toggleModal()
+    }
+
+    componentDidMount(){
+        if(this.props.editingProduct){
+            const {image,price,name} =  this.props.editingProduct
+            console.log("MODAL EDIT")
+            this.setState({
+                image,
+                price,
+                name
+            })
+        }else{
+            console.log("MODAL CREATE")
+        }
+    }
+
+  
+
+    componentDidUpdate(){
+        console.log("MODAL=-----DID UPDATE")
+    }
+
+    componentWillUnmount(){
+        console.log("MODAL=-----WILL UNMOUNT")
+        this.props.clearIsEditing()
     }
 
     handleChange=(event)=>{
@@ -20,12 +45,18 @@ export default class Modal extends Component {
     handleSubmit=(event)=>{
         event.preventDefault();
         const {name,price,image}=this.state
-        this.props.addProduct(name,image,price)
+        if(this.props.editingProduct){
+            this.props.updateProduct(name,image,price)
+        }else{
+            this.props.addProduct(name,image,price)
+        }
+
         this.props.toggleModal()
 
     }
 
     render() {
+
         const {name,price,image}=this.state
         return (
             <div className="modal ">
@@ -33,6 +64,7 @@ export default class Modal extends Component {
                     <button type="button" onClick={this.handleClose} className="close btn btn-outline-primary">
                         Close
                     </button>
+                    <h5>{this.props.editingProduct?'Update':'Create'} Product</h5>
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <label>Product Name</label>
@@ -40,14 +72,14 @@ export default class Modal extends Component {
                         </div>
                         <div className="form-group">
                             <label>Product Price</label>
-                            <input type="text" name="price" className="form-control" placeholder="Product price" value={price} onChange={this.handleChange}/>
+                            <input type="number" name="price" className="form-control" placeholder="Product price" value={price} onChange={this.handleChange}/>
                         </div>
                         <div className="form-group">
                             <label>Product Image</label>
                             <input type="text" name="image" className="form-control" placeholder="Product image" value={image} onChange={this.handleChange}/>
                         </div>
                         <button type="submit" class="btn btn-outline-primary">
-                            ADD
+                            {this.props.editingProduct?"UPDATE":"ADD"}
                         </button>
                     </form>
                 </div>
