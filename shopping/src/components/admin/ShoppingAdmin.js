@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/style/admin.scss'
+import '../../assets/style/admin.scss'
 import MainContent from './MainContent';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';

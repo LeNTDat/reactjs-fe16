@@ -3,30 +3,26 @@ import ContentHeader from './ContentHeader'
 import { Empty } from './Empty'
 import Modal from './Modal'
 import ProductRow from './ProductRow'
+import axios from 'axios';
 
 export default class MainContent extends React.Component{
     state={
         open:false,
         products : [
-            {
-                id:'bcsd2j',
-                name:"ABC 1",
-                price:20,
-                img:""
-            },
-            {
-                id:'8sdsb2',
-                name:"ABC 2",
-                price:20,
-                img:""
-            },  {
-                id:'sdhsod',
-                name:"ABC 3",
-                price:20,
-                img:""
-            },
+            
         ],
         isEditting:undefined //index
+    }
+
+    componentDidMount(){
+        console.log("DIDMOUNT")
+        // fetch("http://localhost:9696/products")
+        axios.get("https://shopping-api-with-jwt.herokuapp.com/products").then(res=>{
+            console.log(res);
+            this.setState({
+                products:res.data
+            })
+        })
     }
 
     addProduct=(name,image,price)=>{
