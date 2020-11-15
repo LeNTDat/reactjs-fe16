@@ -14,7 +14,6 @@ export function Allproducts(props) {
     
     return (
         <>
-            <Navbarclient/>
             <Container>
               
 

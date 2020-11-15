@@ -39,9 +39,14 @@ class Productdetail extends Component {
             console.log(err)
         })
     }
-    handleChangeQuantity=(data)=>{
+    handleChangeQuantity=(data,operator = false)=>{
+        if(operator){
+            return this.setState({
+                quantity:this.state.quantity + data
+            })
+        }
         this.setState({
-            quantity:this.state.quantity + data
+            quantity: data
         })
     }
     items ='https://product.hstatic.net/1000351433/product/4a3c7686-0b83-4ab1-abff-de3d21a1758e_31d51d9c063940f09bddd0e5ac3475d3_grande.jpg'
@@ -49,7 +54,6 @@ class Productdetail extends Component {
         const {name,price,image} = this.state.product_detail;
         return (
             <>
-                <Navbarclient/>
                 {this.state.loading === false ?
                   <Container className="my-5">
                   <Row>

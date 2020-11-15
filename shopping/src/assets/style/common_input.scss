@@ -1,9 +1,10 @@
 .quantity-input {
-  width: 150px;
+  width: 100px;
+  margin: 10px 0px !important;
   & > div {
     display: flex;
-    height: 50px;
-    width: 50px;
+    height: 30px;
+    width: 30px;
     border: 1px solid #d2d2d2;
     justify-content: center;
     align-items: center;
@@ -25,5 +26,11 @@
     }
   }
   .quantity {
+    padding: 0;
+    input {
+      text-align: center;
+      width: 100%;
+      display: block;
+    }
   }
 }

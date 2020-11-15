@@ -10,13 +10,14 @@ import {
     NavbarBrand, 
     NavbarToggler, 
     NavItem, 
-    NavLink, 
     UncontrolledDropdown, 
     Navbar}
 from 'reactstrap'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
+import { ShoppingCartSolid } from '../../assets/icons/shopping-cart-solid';
+import {connect} from 'react-redux';
 
-export default function Navbarclient(props) {
+function Navbarclient(props) {
     
     const toggle=false;
     const isOpen=false;
@@ -24,41 +25,37 @@ export default function Navbarclient(props) {
     return (
         <Container fluid={true}>
             <Navbar color="light" light expand="md">
-                <NavbarBrand href="/">
-                    <Link to="/admin">
-                        ADMIN
-                    </Link>
+                <NavbarBrand>
+                    <NavLink exact to="/">
+                        LOGO
+                    </NavLink>
                 </NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                          <NavLink href="/components/">Components</NavLink>
+                          <NavLink to="/products/">Products</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                            <NavLink to="/cart">Cart</NavLink>
                         </NavItem>
-                        <UncontrolledDropdown nav inNavbar>
-                        <DropdownToggle nav caret>
-                            Options
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                            <DropdownItem>
-                            Option 1
-                            </DropdownItem>
-                            <DropdownItem>
-                            Option 2
-                            </DropdownItem>
-                            <DropdownItem divider />
-                            <DropdownItem>
-                            Reset
-                            </DropdownItem>
-                        </DropdownMenu>
-                        </UncontrolledDropdown>
                     </Nav>
-                    <NavbarText>Simple Text</NavbarText>
+                    <NavbarText>
+                        <div className="cart-icon">
+                            <span class="badge badge-pill badge-primary">2</span>
+                            <ShoppingCartSolid/>
+                        </div>
+                    </NavbarText>
                 </Collapse>
             </Navbar>
         </Container>
     )
 }
+
+const mapStateToProps = (state)=>{
+    return {
+        cart:state.cart
+    }
+}
+
+export default connect(mapStateToProps)(Navbarclient)
