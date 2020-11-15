@@ -4,7 +4,7 @@ import {
     Row, Spinner, 
 } from 'reactstrap';
 import Axios from 'axios';
-
+import API_CONSTANT from '../../assets/constants/api'
 export default class Productlist extends React.Component {
     state={
         products:[],
@@ -15,7 +15,7 @@ export default class Productlist extends React.Component {
         this.setState({
             loading:true
         })
-        Axios.get('https://shopping-api-with-jwt.herokuapp.com/products').then(res=>{
+        Axios.get(API_CONSTANT.DOMAIN + '/products').then(res=>{
             this.setState({
                 products:res.data,
                 loading:false
@@ -30,7 +30,7 @@ export default class Productlist extends React.Component {
             <Row>
                 {this.state.loading &&  <Spinner color="primary" />}
                 {this.state.products.map((product,index)=>{
-                    return <Product key={`$product_${index}`} name={product.name} img={product.image} price={product.price}/>
+                    return <Product key={`$product_${index}`} id={product.id} name={product.name} img={product.image[0]} price={product.price}/>
                  })}
             </Row>
         )

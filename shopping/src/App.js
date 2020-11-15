@@ -5,6 +5,7 @@ import ShoppingAdmin from './components/admin/ShoppingAdmin';
 import { Allproducts } from './components/client/AllProducts';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Login from './components/admin/Login';
+import Productdetail from './components/client/ProductDetail';
 
 function App() {
   
@@ -24,9 +25,15 @@ function App() {
           <Route path="/admin">
               <ShoppingAdmin/>
           </Route>
+          {/* <Route path={componentConst.route} component={Productdetail} /> */}
+         <Route path="/products/:id">
+          <Productdetail/>
+         </Route>
+
           <Route path="/products" >
             <Allproducts/>
           </Route>
+
         </Switch>
       </div>
     </Router>
