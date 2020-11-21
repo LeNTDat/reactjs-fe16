@@ -10,6 +10,14 @@ import {Button,
 } from 'reactstrap'
 export default function Product(props) {
     const {id,name,price,img} = props;
+    const handleAddToCart = () => {
+        props.addToCart({
+            id,
+            name,
+            price,
+            images:img
+        },1)
+    }
     return (
         <Col md={4} className="mb-5">
             <Card>
@@ -21,7 +29,7 @@ export default function Product(props) {
                     </Link>
                 </CardTitle>
                 <CardSubtitle tag="h6" className="mb-2 text-muted">{price}$</CardSubtitle>
-                <Button color="primary" outline>Add to cart</Button>
+                <Button color="primary" outline onClick={handleAddToCart}>Add to cart</Button>
                 </CardBody>
             </Card>
         </Col>

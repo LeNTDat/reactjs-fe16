@@ -5,7 +5,9 @@ import {
 } from 'reactstrap';
 import Axios from 'axios';
 import API_CONSTANT from '../../assets/constants/api'
-export default class Productlist extends React.Component {
+import {connect} from 'react-redux'
+
+class Productlist extends React.Component {
     state={
         products:[],
         loading:false
@@ -30,10 +32,24 @@ export default class Productlist extends React.Component {
             <Row>
                 {this.state.loading &&  <Spinner color="primary" />}
                 {this.state.products.map((product,index)=>{
-                    return <Product key={`$product_${index}`} id={product.id} name={product.name} img={product.image[0]} price={product.price}/>
+                    return <Product addToCart={this.props.addToCart} key={`$product_${index}`} id={product.id} name={product.name} img={product.image[0]} price={product.price}/>
                  })}
             </Row>
         )
     }
   
+
 }
+const mapDispatchToProps = (dispatch) => {
+    // store.dispatch
+    return {
+        addToCart: (product,quantity)=>{
+            dispatch({type:"ADD_TO_CART",payload:{
+                ...product,
+                quantity
+            }})
+        }
+    }
+}
+
+export default connect(null,mapDispatchToProps)(Productlist)

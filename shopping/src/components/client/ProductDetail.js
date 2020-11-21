@@ -15,9 +15,10 @@ import Imagecontainer from './ImageContainer'
 import Navbarclient from './NavbarClient'
 import Axios from 'axios'
 import API_CONSTANT  from '../../assets/constants/api'
+import { connect } from 'react-redux'
 class Productdetail extends Component {
     state={
-        quantity:0,
+        quantity:1,
         product_detail:{
             id:null,
             name:'',
@@ -49,6 +50,12 @@ class Productdetail extends Component {
             quantity: data
         })
     }
+    handleAddToCart=()=>{
+        this.props.addToCart({
+            ...this.state.product_detail,
+            images:this.state.product_detail.image[0]
+        },this.state.quantity)
+    }
     items ='https://product.hstatic.net/1000351433/product/4a3c7686-0b83-4ab1-abff-de3d21a1758e_31d51d9c063940f09bddd0e5ac3475d3_grande.jpg'
     render() {
         const {name,price,image} = this.state.product_detail;
@@ -69,7 +76,7 @@ class Productdetail extends Component {
                                   Price: {price}$
                               </h5>
                               <Commonquantityinput onChange={this.  handleChangeQuantity} value={this.state.quantity}/>
-                              <Button color="primary" outline>Submit</Button>
+                              <Button color="primary" outline onClick={this.handleAddToCart}>Add to cart</Button>
                           </Card>
                       </Col>
                   </Row>      
@@ -93,4 +100,18 @@ class Productdetail extends Component {
     }
 }
 
-export default withRouter(Productdetail)
+const mapDispatchToProps = dispatch => {
+    return {
+        addToCart: (product,quantity)=>{
+            dispatch({
+                type:"ADD_TO_CART",
+                payload:{
+                    ...product,
+                    quantity
+                }
+            })
+        }
+    }
+}
+
+export default connect(null,mapDispatchToProps)(withRouter(Productdetail))

@@ -42,7 +42,7 @@ function Navbarclient(props) {
                     </Nav>
                     <NavbarText>
                         <div className="cart-icon">
-                            <span class="badge badge-pill badge-primary">2</span>
+                            <span class="badge badge-pill badge-primary">{props.cart_total}</span>
                             <ShoppingCartSolid/>
                         </div>
                     </NavbarText>
@@ -53,8 +53,11 @@ function Navbarclient(props) {
 }
 
 const mapStateToProps = (state)=>{
+    const total = state.cart.reduce((sum,product)=>{
+        return sum = product.quantity + sum
+    },0) // tinh tong so luong san pham trong gio
     return {
-        cart:state.cart
+        cart_total:total
     }
 }
 
