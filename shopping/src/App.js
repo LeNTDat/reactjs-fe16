@@ -60,6 +60,11 @@ function App() {
         ...state,
         cart:new_cart
       }
+    }else if(action.type === 'CLEAR_CART'){
+      return {
+        ...state,
+        cart:[]
+      }
     }
     return state
   }
@@ -81,26 +86,27 @@ function App() {
               
             */}
             {/* ADMIN  localhost:3000/admin */}
-            <Navbarclient/>
+            {/* QUICK AND DIRTY */}
             <Switch>
               <Route exact path="/">
+                  <Navbarclient/>
                   <Home/>
               </Route>
-              <Route path="/admin/login">
-                  <Login/>
+              <Route path="/admin/login" component={Login}>
               </Route>
-              <Route path="/admin">
-                  <ShoppingAdmin/>
+              <Route path="/admin" component={ShoppingAdmin}>
               </Route>
               <Route path="/cart">
+                <Navbarclient/>
                 <Cart/>
               </Route>
               {/* <Route path={componentConst.route} component={Productdetail} /> */}
-            <Route path="/products/:id">
+              <Route path="/products/:id">
+                <Navbarclient/>
                 <Productdetail/>
-            </Route>
-
+              </Route>
               <Route path="/products" >
+                <Navbarclient/>
                 <Allproducts/>
               </Route>
 

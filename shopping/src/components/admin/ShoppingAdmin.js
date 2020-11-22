@@ -18,6 +18,12 @@ export default class ShoppingAdmin extends React.Component {
             sidebar_open:!this.state.sidebar_open
         })
     }
+    componentDidMount(){
+        const token = window.localStorage.getItem('admin_token');
+        if(!token){
+            this.props.history.push('/admin/login')
+        }
+    }
     render(){
         return <div className="container-fluid">
             <div className="row">

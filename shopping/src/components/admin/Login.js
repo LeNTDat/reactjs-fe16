@@ -6,22 +6,60 @@ import { Card,
      Input,
      Button,
     } from 'reactstrap'
-
+import Axios from 'axios';
+import Swal from 'sweetalert2'
 export default class Login extends Component {
-   
-
+   state={
+       email:"",
+       password:""
+   }
+    componentDidMount(){
+        const token = window.localStorage.getItem('admin_token');
+        if(token){
+            this.props.history.push('/admin')
+        }
+    }
+    handleChange=(event)=>{
+        this.setState({
+            [event.target.name]:event.target.value
+        })
+    }
+    handleLogin=(e)=>{
+        e.preventDefault();
+        Axios.post('https://shopping-api-with-jwt.herokuapp.com/login',{
+            ...this.state
+        }).then(res=>{
+            console.log(res)
+            const token = res.data;
+            window.localStorage.setItem('admin_token',token);
+            Swal.fire({
+                title:"Login successfully",
+                timer:1000,
+                icon:'success'
+            }).then(()=>{
+                this.props.history.push('/admin')
+            })
+        }).catch(err=>{
+            console.log(err)
+            Swal.fire({
+                title:"Login unsuccessfully",
+                timer:1000,
+                icon:'error'
+            })
+        })
+    }
     render() {
         return (
             <div class="login-page d-flex justify-content-center align-items-center">
                 <Card className="login-modal">
-                    <Form>
+                    <Form onSubmit={this.handleLogin}>
                         <FormGroup>
                             <Label for="exampleEmail">Email</Label>
-                            <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+                            <Input type="email" name="email" id="exampleEmail" onChange={this.handleChange} placeholder="with a placeholder" />
                         </FormGroup>
                         <FormGroup>
                             <Label for="examplePassword">Password</Label>
-                            <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+                            <Input type="password" name="password" id="examplePassword" onChange={this.handleChange} placeholder="password placeholder" />
                         </FormGroup>
                         <Button>Submit</Button>
                     </Form>

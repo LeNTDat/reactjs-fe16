@@ -10,6 +10,8 @@ import { Commonquantityinput } from './CommonQuantityInput'
 import Imagecontainer from './ImageContainer'
 import {connect} from 'react-redux';
 import Swal from 'sweetalert2'
+import '../../assets/style/admin.scss'
+import Axios from 'axios'
 
 class CartPorduct extends React.Component {
     state={
@@ -91,7 +93,96 @@ class CartPorduct extends React.Component {
    }
 }
 
+class CheckoutModal extends React.Component {
+    state={
+      full_name:"",
+      phone:"",
+      address:""
+    }
+    handleClose=()=>{
+        this.props.toggleModal()
+    }
+    handleChange=(event)=>{
+        this.setState({
+         [event.target.name]: event.target.value
+        })
+  
+     }
+ 
+     handleSubmit=(event)=>{
+        event.preventDefault();
+     
+        Axios.post('https://shopping-api-with-jwt.herokuapp.com/carts',{
+            ...this.state,
+            cart:[
+                ...this.props.cart
+            ],
+            total_item:this.props.total_item,
+            total_price:this.props.total_price
+        }).then(res=>{
+            Swal.fire({
+                title:"Checkout successfully",
+                timer:2000,
+                showConfirmButton:false,
+                icon:'success',
+                timerProgressBar:true
+            }).then(()=>{
+                this.props.clearCart()
+                this.handleClose();
+            })
+        }).catch(err=>{
+         
+            Swal.fire({
+                title:"Checkout unsuccessfully",
+                text:"Something went wrong",
+                timer:2000,
+                showConfirmButton:false,
+                icon:'error',
+                timerProgressBar:true
+            })
+        })
+
+     }
+    render(){
+        const {full_name,address,phone} = this.state
+        return <div className="modal ">
+            <div className="content p-3">
+                <button type="button" onClick={this.handleClose} className="close btn ">
+                    Close
+                </button>
+                <h5>Checkout</h5>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                        <label>Product Name</label>
+                        <input type="text" name="full_name" className="form-control" placeholder="Full name" value={full_name} onChange={this.handleChange}/>
+                    </div>
+                    <div className="form-group">
+                        <label>Product Price</label>
+                        <input type="text" name="phone" className="form-control" placeholder="Phone" value={phone} onChange={this.handleChange}/>
+                    </div>
+                    <div className="form-group">
+                        <label>Product Image</label>
+                        <input type="text" name="address" className="form-control" placeholder="Address" value={address} onChange={this.handleChange}/>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">
+                        Checkout
+                    </button>
+                </form>
+            </div>
+        </div>
+    }
+}
+
 class Cart extends Component {
+    state={
+        open:false,
+    }
+
+    toggleModal=()=>{
+        this.setState({
+            open:!this.state.open
+        })
+    }
 
     render() {
         return (
@@ -107,21 +198,32 @@ class Cart extends Component {
                       </Col>
                       <Col md={3} cls>
                           <Card className="p-3">
-                              <h3>Total items: 20 </h3>
-                              <h4 className="text-warning">Total price: 200$</h4>
-                              <Button color="primary" >Checkout</Button>
+                              <h3>Total items: {this.props.total_item} </h3>
+                              <h4 className="text-warning">Total price: {this.props.total_price}$</h4>
+                              <Button color="primary" onClick={this.toggleModal}>Checkout</Button>
                           </Card>
                       </Col>
                   </Row>      
               </Container>
+              {
+                this.state.open?<CheckoutModal total_item={this.props.total_item} total_price={this.props.total_price} cart={this.props.cart} clearCart={this.props.clearCart} toggleModal={this.toggleModal}/>:''
+              }
             </>
         )
     }
 }
 
 const mapStateToProps = state => {
+    const total_item = state.cart.reduce((sum,product)=>{
+        return sum = product.quantity + sum
+    },0)
+    const total_price = state.cart.reduce((sum,product)=>{
+        return sum = product.quantity*product.price + sum
+    },0)
     return {
-        cart:state.cart
+        cart:state.cart,
+        total_item,
+        total_price
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -139,6 +241,11 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type:"DELETE_CART",
                 payload: id_cart
+            })
+        },
+        clearCart: ()=>{
+            dispatch({
+                type:"CLEAR_CART"
             })
         }
     }

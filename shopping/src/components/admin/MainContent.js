@@ -4,7 +4,7 @@ import { Empty } from './Empty'
 import Modal from './Modal'
 import ProductRow from './ProductRow'
 import axios from 'axios';
-
+import Swal from 'sweetalert2'
 export default class MainContent extends React.Component{
     state={
         open:false,
@@ -26,14 +26,38 @@ export default class MainContent extends React.Component{
     }
 
     addProduct=(name,image,price)=>{
-        const product={
-            id:this.state.products.length,
+        // const product={
+        //     id:this.state.products.length,
+        //     name,
+        //     image,
+        //     price
+        // }
+        // this.setState({
+        //     products:[...this.state.products,product]
+        // })
+        axios.post('https://shopping-api-with-jwt.herokuapp.com/products',{
             name,
             image,
             price
-        }
-        this.setState({
-            products:[...this.state.products,product]
+        },{
+            headers:{
+                token: window.localStorage.getItem('admin_token')
+            }
+        }).then(res=>{
+            console.log(res)
+            Swal.fire({
+                title:"Create Successfully",
+                timer:1000,
+                icon:'success'
+            })
+        }).catch(err=>{
+            console.log(err);
+            Swal.fire({
+                title:"Create Unsuccessfully",
+                text:err.message,
+                timer:1000,
+                icon:'error'
+            })
         })
 
     }

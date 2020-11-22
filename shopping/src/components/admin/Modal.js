@@ -4,7 +4,10 @@ export default class Modal extends Component {
     state={
         name:"PRODUCT NEW",
         price:20,
-        image:"//bizweb.dktcdn.net/thumb/large/100/331/067/products/115844444-311743083208439-6108934669943805257-n.jpg?v=1595330674000"
+        image_one:"//bizweb.dktcdn.net/thumb/large/100/331/067/products/115844444-311743083208439-6108934669943805257-n.jpg?v=1595330674000",
+        image_two:"//bizweb.dktcdn.net/thumb/large/100/331/067/products/115844444-311743083208439-6108934669943805257-n.jpg?v=1595330674000",
+        image_three:"//bizweb.dktcdn.net/thumb/large/100/331/067/products/115844444-311743083208439-6108934669943805257-n.jpg?v=1595330674000"
+    
     }
     handleClose=()=>{
         this.props.toggleModal()
@@ -44,7 +47,8 @@ export default class Modal extends Component {
 
     handleSubmit=(event)=>{
         event.preventDefault();
-        const {name,price,image}=this.state
+        const {name,price,image_one,image_three,image_two}=this.state
+        const image =[image_one,image_two,image_three]
         if(this.props.editingProduct){
             this.props.updateProduct(name,image,price)
         }else{
@@ -57,7 +61,7 @@ export default class Modal extends Component {
 
     render() {
 
-        const {name,price,image}=this.state
+        const {name,price,image_one,image_two,image_three}=this.state
         return (
             <div className="modal ">
                 <div className="content p-3">
@@ -76,7 +80,15 @@ export default class Modal extends Component {
                         </div>
                         <div className="form-group">
                             <label>Product Image</label>
-                            <input type="text" name="image" className="form-control" placeholder="Product image" value={image} onChange={this.handleChange}/>
+                            <input type="text" name="image_one" className="form-control" placeholder="Product image" value={image_one} onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-group">
+                            <label>Product Image</label>
+                            <input type="text" name="image_two" className="form-control" placeholder="Product image" value={image_two} onChange={this.handleChange}/>
+                        </div>
+                        <div className="form-group">
+                            <label>Product Image</label>
+                            <input type="text" name="image_three" className="form-control" placeholder="Product image" value={image_three} onChange={this.handleChange}/>
                         </div>
                         <button type="submit" class="btn btn-outline-primary">
                             {this.props.editingProduct?"UPDATE":"ADD"}

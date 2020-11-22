@@ -13,7 +13,7 @@
   background: rgba(0, 0, 0, 0.5);
   height: 100vh;
   width: 100%;
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   .close {
@@ -24,7 +24,7 @@
   .content {
     position: relative;
     width: 50%;
-    height: 60%;
+    min-height: 60%;
     background: white;
   }
 }
